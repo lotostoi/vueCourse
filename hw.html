@@ -1,0 +1,114 @@
+<!doctype html>
+<html lang="ru">
+
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>1</title>
+	<link rel="stylesheet" href="css/bootstrap.min.css">
+	<link href="css/styles.css" rel="stylesheet">
+	<script src="js/vue.js"></script>
+</head>
+
+<body>
+	<div class="wrapper">
+		<div class="sample">
+			<form>
+				<div v-for="(field,i) in fields" class="form-group" :key='i'>
+					<label>{{i}}</label>
+					<input type="text" class="form-control" v-on:input.lazy="writefield(i,$event)">
+				</div>
+				...
+				<div class="form-group">
+					<label>Guests</label>
+					<input type="button" class="btn btn-primary" value="+" @click="guests.push('')">
+				</div>
+				<div class="form-group" v-for="(guest,i) in guests">
+					<button class="btn btn-outline-primary" @click.prevent="dellguest(i)">Guest {{i}}</button>
+					<input type="text" class="form-control" v-on:input.lazy="writeguest(i,$event)">
+				</div>
+				<hr>
+				<button class="btn btn-success" @click.prevent="showData" :disabled="disab">Send Data</button>
+			</form>
+			<div>
+				<h2>All done!</h2>
+				<table v-show="show" class="table table-bordered">
+					<tr v-for="(field,i) in fields">
+						<td>{{i}}</td>
+						<td>{{field}}</td>
+					</tr>
+					<tr>
+						<td>Guests</td>
+						<td>
+							<ul class="list-group" v-for="(guest,i) in guests">
+								<li class="list-group-item list-group-item-warning" v-if="(guest != '')">{{guest}}</li>
+							</ul>
+
+						</td>
+					</tr>
+				</table>
+			</div>
+		</div>
+	</div>
+	<script>
+		new Vue({
+			el: '.sample',
+			data: {
+				show: false,
+				fields: {
+					'First Name': '',
+					'Last Name': '',
+					'mail': '',
+					'phone': '',
+				},
+				guests: []
+			},
+			methods: {
+				dellguest(i) {
+					this.guests.splice(i, 1)
+
+					let arr = this.guests
+					console.log(arr)
+
+					let cont =this
+					arr.forEach((e,j) => {
+						console.log(this)
+					this.$set(this.guests, j, e)
+
+					});
+				},
+				writefield(i, event) {
+					this.$set(this.fields, i, event.target.value)
+				},
+				writeguest(i, event) {
+
+
+					this.$set(this.guests, i, event.target.value)
+					//this.guests.i = event.target.value
+
+				},
+				showData() {
+					this.show = !this.show
+				}
+
+			},
+			computed: {
+				disab() {
+					let flag = false
+					for (key in this.fields) {
+						if (this.fields[`${key}`] == '') {
+							flag = true
+						}
+					}
+					if (flag) {
+						return true
+					} else {
+						return false
+					}
+				}
+			}
+		});
+	</script>
+</body>
+
+</html>
