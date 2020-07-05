@@ -1,0 +1,138 @@
+<!doctype html>
+<html lang="ru">
+
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>1</title>
+	<link rel="stylesheet" href="css/bootstrap.min.css">
+	<link rel="stylesheet" href="css/font-awesome.min.css">
+	<link href="css/styles.css" rel="stylesheet">
+	<script src="js/vue.js"></script>
+</head>
+
+<body>
+	<div class="wrapper">
+		<div class="sample">
+			<form v-if="show">
+				<div class="progress">
+					<div class="progress-bar" :style="'width:' + progress + '%'" role="progressbar"
+						aria-valuenow="progress" aria-valuemin="0" aria-valuemax="100"></div>
+				</div>
+				<div>
+					<div class="form-group" v-for="val,i in  info" :key="'kay'+i">
+						<label style="display: flex;">
+							<span>{{val.name}}</span>
+							<div v-if="val.value!=''" class="ml-2">
+								<i v-if="val.valid" class="fa fa-check-circle" aria-hidden="true"
+									style="color:green"></i>
+								<i v-else class="fa fa-exclamation" aria-hidden="true" style="color:red"></i>
+							</div>
+						</label>
+
+						<input type="text" class="form-control" v-model="val.value" @input="makeValid(i)">
+					</div>
+				</div>
+				<button class="btn btn-primary" :disabled="valid" @click="show=!show" type="button">
+					Send Data
+				</button>
+			</form>
+			<div v-else>
+				<table class="table table-bordered">
+					<tr v-for="val,i in  info" :key="'kay'+i">
+						<td>{{val.name}}</td>
+						<td>{{val.value}}</td>
+					</tr>
+				</table>
+				<button class="btn btn-primary" :disabled="valid" @click="show=!show">
+					Back
+				</button>
+			</div>
+
+		</div>
+	</div>
+	<script>
+
+		new Vue({
+			el: '.sample',
+			data: {
+				info: [
+					{
+						name: 'Name',
+						value: '',
+						pattern: /^[a-zA-Z ]{2,30}$/,
+						valid: false
+					},
+					{
+						name: 'Phone',
+						value: '',
+						pattern: /^[0-9]{7,14}$/,
+						valid: false
+					},
+					{
+						name: 'Email',
+						value: '',
+						pattern: /.+/,
+						valid: false
+					},
+					{
+						name: 'Some Field 1',
+						value: '',
+						pattern: /.+/,
+						valid: false
+					},
+					{
+						name: 'Some Field 2',
+						value: '',
+						pattern: /.+/,
+						valid: false
+					}
+				],
+				show: true,
+				progress: 0,
+				count: 0
+			},
+			mounted() {
+				this.count = this.info.length - 1
+			},
+			methods: {
+				makeValid(i) {
+
+					let val = this.info[i].value,
+						pattern = this.info[i].pattern
+
+					if (val.search(pattern) != -1) {
+						this.$set(this.info[i], 'valid', true)
+
+						this.progress = 100 / this.info.length * this.lengBar
+
+					} else {
+
+						this.$set(this.info[i], 'valid', false)
+						this.progress = 100 / this.info.length * this.lengBar
+					}
+
+				},
+
+			},
+			computed: {
+				lengBar() {
+					let k = 0
+					this.info.forEach(el => {
+						el.valid && k++
+					});
+					return k
+				},
+				valid() {
+					for (let i = 0; i < this.info.length; i++) {
+						if (!this.info[i].valid) return true
+					}
+					return false
+				}
+			}
+
+		});
+	</script>
+</body>
+
+</html>
