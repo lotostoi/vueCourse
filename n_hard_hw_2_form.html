@@ -48,6 +48,7 @@
 			props: ['name', 'pattern', 'index','value'],
 		 	 data() {
 			 	return {
+					 // необходим  что-бы сделать так, что при возврате из итоговой таблици назад, поля инпутов не теряли значения
 					ch_value: ''
 				} 
 			},  
@@ -90,9 +91,9 @@
 				},
 				getClass() {
 					if (this.valid) {
-						return 'fa-check-circle'
+						return 'fa-check-circle green'
 					} else {
-						return 'fa-exclamation'
+						return 'fa-exclamation red'
 					}
 				}
 			}
@@ -141,6 +142,8 @@
 				})
 			},
 			methods: {
+				// можно ли в этот метод передать параметр родителя из родителя (например i), и парметр ребенка из ребенка (v)? 
+				// сейчас все передается из ребенка в объекте v.
 				chengData(v) {
 					this.$set(this.info[v.index], 'value', v.value)
 					this.$set(this.info[v.index], 'valid', v.valid)
