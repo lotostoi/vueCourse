@@ -16,22 +16,13 @@
 		<div class="sample">
 			<form v-if="show">
 				<div class="progress">
-					<div class="progress-bar" :style="'width:' + progress + '%'" role="progressbar"
-						aria-valuenow="progress" aria-valuemin="0" aria-valuemax="100"></div>
+					<div class="progress-bar" :style="lengBar" role="progressbar"
+						 aria-valuemin="0" aria-valuemax="100"></div>
 				</div>
 				<div>
-					<div class="form-group" v-for="val,i in  info" :key="'kay'+i">
-						<label style="display: flex;">
-							<span>{{val.name}}</span>
-							<div v-if="val.value!=''" class="ml-2">
-								<i v-if="val.valid" class="fa fa-check-circle" aria-hidden="true"
-									style="color:green"></i>
-								<i v-else class="fa fa-exclamation" aria-hidden="true" style="color:red"></i>
-							</div>
-						</label>
-
-						<input type="text" class="form-control" v-model="val.value" @input="makeValid(i)">
-					</div>
+					<field v-for="field,i in info" :name="field.name" :value="field.value" :index="i" :pattern="field.pattern"
+						@valid="chengData">
+					</field>
 				</div>
 				<button class="btn btn-primary" :disabled="valid" @click="show=!show" type="button">
 					Send Data
@@ -39,12 +30,12 @@
 			</form>
 			<div v-else>
 				<table class="table table-bordered">
-					<tr v-for="val,i in  info" :key="'kay'+i">
+					<tr v-for="val,i in  info">
 						<td>{{val.name}}</td>
 						<td>{{val.value}}</td>
 					</tr>
 				</table>
-				<button class="btn btn-primary" :disabled="valid" @click="show=!show">
+				<button class=" btn btn-primary" :disabled="valid" @click="show=!show">
 					Back
 				</button>
 			</div>
@@ -52,6 +43,60 @@
 		</div>
 	</div>
 	<script>
+
+		Vue.component('field', {
+			props: ['name', 'pattern', 'index','value'],
+		 	 data() {
+			 	return {
+					ch_value: ''
+				} 
+			},  
+			template: ` <div class="form-group">
+							<label style="display: flex;">
+								<span>{{name}}</span>
+								<div v-if="active" class="ml-2">
+								    <i class="fa" :class="getClass"></i>
+								</div> 
+							</label>
+							<input type="text" class="form-control" :value="value" @input="makeEvent($event)" >
+						</div>`,
+			methods: {
+				makeEvent(e) {
+					this.ch_value = e.target.value
+					if (this.valid) {
+						this.$emit('valid', { index: this.index, value: this.ch_value, valid: true })
+					} else {
+						this.$emit('valid', { index: this.index, value: this.ch_value, valid: false })
+					}
+
+				},
+
+			},
+			computed: {
+				active() {
+					if (this.value != '') {
+						return true
+					} else {
+						return false
+					}
+				},
+				valid() {
+					if (this.value.search(this.pattern) != -1) {
+						return true
+
+					} else {
+						return false
+					}
+				},
+				getClass() {
+					if (this.valid) {
+						return 'fa-check-circle'
+					} else {
+						return 'fa-exclamation'
+					}
+				}
+			}
+		})
 
 		new Vue({
 			el: '.sample',
@@ -61,59 +106,45 @@
 						name: 'Name',
 						value: '',
 						pattern: /^[a-zA-Z ]{2,30}$/,
-						valid: false
+
 					},
 					{
 						name: 'Phone',
 						value: '',
 						pattern: /^[0-9]{7,14}$/,
-						valid: false
+
 					},
 					{
 						name: 'Email',
 						value: '',
 						pattern: /.+/,
-						valid: false
+
 					},
 					{
 						name: 'Some Field 1',
 						value: '',
 						pattern: /.+/,
-						valid: false
+
 					},
 					{
 						name: 'Some Field 2',
 						value: '',
 						pattern: /.+/,
-						valid: false
+
 					}
 				],
 				show: true,
-				progress: 0,
-				count: 0
 			},
-			mounted() {
-				this.count = this.info.length - 1
+			beforeMount() {
+				this.info.forEach(e => {
+					this.$set(e, 'valid', false)
+				})
 			},
 			methods: {
-				makeValid(i) {
-
-					let val = this.info[i].value,
-						pattern = this.info[i].pattern
-
-					if (val.search(pattern) != -1) {
-						this.$set(this.info[i], 'valid', true)
-
-						this.progress = 100 / this.info.length * this.lengBar
-
-					} else {
-
-						this.$set(this.info[i], 'valid', false)
-						this.progress = 100 / this.info.length * this.lengBar
-					}
-
-				},
-
+				chengData(v) {
+					this.$set(this.info[v.index], 'value', v.value)
+					this.$set(this.info[v.index], 'valid', v.valid)
+				}
 			},
 			computed: {
 				lengBar() {
@@ -121,7 +152,8 @@
 					this.info.forEach(el => {
 						el.valid && k++
 					});
-					return k
+
+					return 'width:' + 100 / this.info.length * k + '%'
 				},
 				valid() {
 					for (let i = 0; i < this.info.length; i++) {
