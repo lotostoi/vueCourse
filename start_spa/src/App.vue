@@ -109,7 +109,7 @@ export default {
 <style lang="scss">
 .wrapper {
   width: 100%;
-  max-width: 1200px;
+  max-width: 1400px;
   margin: 0 auto;
   padding: 30px;
 }
