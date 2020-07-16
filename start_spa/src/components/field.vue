@@ -2,10 +2,15 @@
   <div class="form-group">
     <label style="display: flex;">
       <span>{{name}}</span>
-      <div v-if="active" class="ml-2">
-        <BIconCheck v-if="valid" class="check" />
-        <BIconInfo v-else class="info" />
-      </div>
+      <transition
+        enter-active-class="animate__animated animate__flipInX"
+        leave-active-class="animate__animated animate__bounce"
+      >
+        <div v-if="active" class="ml-2">
+          <BIconCheck v-if="valid" class="check" />
+          <BIconInfo v-else class="info" />
+        </div>
+      </transition>
     </label>
     <input type="text" class="form-control" :value="value" @input="makeEvent($event)" />
   </div>

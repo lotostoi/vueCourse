@@ -10,7 +10,7 @@
             :value="field.value"
             :valid="field.valid"
             @valid="chengData(i, $event)"
-            :key="i+1"
+            :key="i"
           ></AppField>
         </div>
         <button
@@ -75,7 +75,7 @@ export default {
       show: true
     };
   },
-  beforeMount() {
+  created() {
     this.info.forEach((e,i) => {
       let res = e.value.search(this.info[i].pattern) != -1
       this.$set(e, "valid", res );
