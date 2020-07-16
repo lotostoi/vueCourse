@@ -3,12 +3,15 @@
     <label style="display: flex;">
       <span>{{name}}</span>
       <transition
-        enter-active-class="animate__animated animate__flipInX"
-        leave-active-class="animate__animated animate__bounce"
+      
+        v-if="active"
+        enter-active-class="animate__animated animate__slideInRight"
+        leave-active-class="animate__animated animate__slideOutRight"
+        v-on:after-enter="fl=true"
       >
-        <div v-if="active" class="ml-2">
-          <BIconCheck v-if="valid" class="check" />
-          <BIconInfo v-else class="info" />
+        <div class="contIcons ml-2" :class="(valid && fl ? 'rotateFront' : 'rotateBack')">
+          <BIconCheck class="check" />
+          <BIconInfo class="info" />
         </div>
       </transition>
     </label>
@@ -37,6 +40,7 @@ export default {
   },
   data() {
     return {
+      fl: false,
       ch_value: ""
     };
   },
@@ -52,23 +56,53 @@ export default {
   computed: {
     active() {
       return this.value != "";
-    },
-    getClass() {
-      return this.valid ? "fa-check-circle green" : "fa-exclamation red";
     }
   }
 };
 </script>
 
 <style scoped lang="scss" scoped>
+$duration: 0.9s;
+
+.contIcons {
+  transition: transform $duration;
+  animation-duration: 0.5s;
+  position: relative;
+  height: 20px;
+  width: 20px;
+  transform-style: preserve-3d;
+}
+
+.rotateFront {
+  transform: rotateY(180deg);
+}
+.rotateBack {
+  transform: rotateY(0deg);
+}
+
 .check {
+  position: absolute;
+  left: 0;
+  top: 0;
+  height: 100%;
+  width: 100%;
   background-color: green;
   border-radius: 50%;
   color: white;
   font-size: 20px;
+  backface-visibility: hidden;
+  z-index: 5;
+  transform: rotateY(180deg);
 }
 .info {
+  position: absolute;
+  left: 0;
+  top: 0;
+  height: 100%;
+  width: 100%;
   color: red;
   font-size: 25px;
+  backface-visibility: hidden;
+  z-index: 4;
 }
 </style>
