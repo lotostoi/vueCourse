@@ -2,18 +2,17 @@
   <div class="form-group">
     <label style="display: flex;">
       <span>{{name}}</span>
-      <transition
-      
-        v-if="active"
-        enter-active-class="animate__animated animate__slideInRight"
-        leave-active-class="animate__animated animate__slideOutRight"
-        v-on:after-enter="fl=true"
-      >
-        <div class="contIcons ml-2" :class="(valid && fl ? 'rotateFront' : 'rotateBack')">
+      <!-- Не использовал <transition>  потому, что не получалось повторить алогоритм работы анимаций,
+         который реализован сейчас. В принцепе все работало хорошо,но один или несколько шагов пропускались. 
+         Например контенер с иконками при активации или появляся с анимацией и пропадал без нее или наоборот.
+         Дима если ты покажешь как реализовать этот алоритм с использованием обертки <transition>, было бы здорово!
+      -->
+      <div :class="getClassForWrapper">
+        <div class="contIcons ml-2" :class="getClassForContent">
           <BIconCheck class="check" />
           <BIconInfo class="info" />
         </div>
-      </transition>
+      </div>
     </label>
     <input type="text" class="form-control" :value="value" @input="makeEvent($event)" />
   </div>
@@ -38,6 +37,12 @@ export default {
       type: String
     }
   },
+  mounted() {
+    let delay = this.active ? 0 : 1000;
+    setTimeout(() => {
+      this.fl = true;
+    }, delay);
+  },
   data() {
     return {
       fl: false,
@@ -56,21 +61,41 @@ export default {
   computed: {
     active() {
       return this.value != "";
+    },
+    getClassForWrapper() {
+      return this.active
+        ? "animate__animated animate__slideInRight duration "
+        : "animate__animated animate__slideOutRight duration ";
+    },
+    getClassForContent() {
+      let firtsClass = this.valid ? "rotateFront" : "rotateBack";
+      let secondClass = this.fl ? "contIcons-active" : "contIcons-off";
+      return firtsClass + " " + secondClass;
     }
   }
 };
 </script>
 
 <style scoped lang="scss" scoped>
-$duration: 0.9s;
+$duration: 0.3s;
 
 .contIcons {
   transition: transform $duration;
-  animation-duration: 0.5s;
   position: relative;
   height: 20px;
   width: 20px;
   transform-style: preserve-3d;
+}
+
+.duration {
+  animation-duration: $duration;
+}
+
+.contIcons-active {
+  opacity: 1;
+}
+.contIcons-off {
+  opacity: 0;
 }
 
 .rotateFront {
