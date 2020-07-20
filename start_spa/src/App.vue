@@ -1,8 +1,10 @@
 <template>
   <div>
     <app-header @showCart="on=false" @showCotalog="on=true"></app-header>
-    <app-content v-if="on"></app-content>
-    <app-cart v-else  @back="on=!on"></app-cart>
+    <transition enter-active-class="enter" leave-active-class="leave" mode="out-in">
+      <app-content v-if="on"></app-content>
+      <app-cart @back="on=!on" v-else></app-cart>
+    </transition>
   </div>
 </template>
 
@@ -32,3 +34,34 @@ export default {
   }
 };
 </script>
+
+<style lang="scss">
+@keyframes leave {
+  from {
+    opacity: 1;
+    transform: translateX(0);
+    
+  }
+  to {
+    opacity: 0;
+    transform: translateX(100%);
+  }
+}
+@keyframes enter {
+  from {
+    opacity: 0;
+    transform: translateX(-100%);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+.enter {
+  animation: enter 0.5s linear forwards;
+}
+.leave {
+  animation: leave 0.5s linear forwards;
+}
+</style>

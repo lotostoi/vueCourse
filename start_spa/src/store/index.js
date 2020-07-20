@@ -83,11 +83,12 @@ export default new Vuex.Store({
 
 			switch (newCnt) {
 				case '-1':
-					good.cnt != 1 ? Vue.set(good, 'cnt', --good.cnt) : state.goodsInCart.splice(index, 1)
-
+					//good.cnt != 1 ? Vue.set(good, 'cnt', --good.cnt) : state.goodsInCart.splice(index, 1)
+					good.cnt != 1 ? good.cnt-- : state.goodsInCart.splice(index, 1)
 					break
 				case '+1':
-					Vue.set(good, 'cnt', ++good.cnt)
+					//Vue.set(good, 'cnt', ++good.cnt)
+					good.cnt++
 					break
 				default:
 					let res = (isNaN(newCnt) || newCnt < 1) ? 1 : newCnt
