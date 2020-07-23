@@ -23,7 +23,7 @@
 </template>
 
 <script>
-import AppProduct from "./good";
+import AppProduct from "../components/good";
 import { mapGetters, mapActions } from "vuex";
 import { BCard } from "bootstrap-vue";
 

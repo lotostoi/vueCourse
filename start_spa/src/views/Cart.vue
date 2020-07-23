@@ -1,8 +1,9 @@
 <template>
-  <div class="mt-1 ">
+  <div class="mt-1">
     <div class="container bg-secondary rounded p-3">
       <h1>Cart</h1>
-      <div class="row">
+
+      <transition-group leave-active-class="prod-leave" teg="div" class="row">
         <div class="col col-sm-3" v-for="good in goodsInCart" :key="good.id">
           <b-card
             :title="good.name"
@@ -27,7 +28,8 @@
             </div>
           </b-card>
         </div>
-      </div>
+      </transition-group>
+
       <hr />
       <p>TotalQuantit: {{ inCart }}</p>
       <p>TotalPrice: {{ total }}</p>
@@ -53,6 +55,31 @@ export default {
 };
 </script>
 <style lang="scss" scoped>
+@keyframes prod-leave {
+  from {
+    transform: translate(0, 0);
+    opacity: 1;
+  }
+  25% {
+    transform: translate(50px, -50px);
+    opacity: .75;
+  }
+  50% {
+    transform: translate(100px, 20px);
+    opacity: .50;
+  }
+  75% {
+    transform: translate(150px, 70px);
+    opacity: .25;
+  }
+  to {
+    transform: translate(250px, 50px);
+    opacity: 0;
+  }
+}
+.prod-leave {
+  animation: prod-leave 0.5s linear forwards;
+}
 .spa-div {
   display: flex;
   align-items: center;

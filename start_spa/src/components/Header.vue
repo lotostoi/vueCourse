@@ -3,6 +3,7 @@
     <div class="container bg-warning rounded">
       <div class="d-block">
         <div class="cont">
+          
           <h1 @click="$emit('showCotalog')" class="hover">Site</h1>
           <div @click="$emit('showCart')">
             <p>{{inCart}}</p>
@@ -15,14 +16,20 @@
 </template>
 
 <script>
-import AppCart from "./Cart";
 import { BIconCart } from "bootstrap-vue";
 import { mapGetters } from "vuex";
 
 export default {
   components: {
-    AppCart,
     BIconCart
+  },
+  data() {
+    return {
+   
+    };
+  },
+  mounted() {
+    console.log(this.$router.routes + " dfgdfg");
   },
   computed: {
     ...mapGetters(["inCart"])
