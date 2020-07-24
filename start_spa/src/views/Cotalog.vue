@@ -1,5 +1,5 @@
 <template>
-  <section class="mt-1 ">
+  <section class="mt-1">
     <div class="container bg-secondary rounded p-3">
       <h1>Cotalog</h1>
       <div class="row">
@@ -14,7 +14,16 @@
             class="mb-2"
           >
             <p>${{good.price}}</p>
-            <button class="btn btn-success" @click="addToCart({good})">Add to Cart</button>
+            <button
+              v-if="checkInCart(good.id)"
+              class="btn btn-danger"
+              @click="actionsCart({id:good.id,action:'dec'})"
+            >Remove</button>
+            <button
+              v-else
+              class="btn btn-success"
+              @click="actionsCart({id:good.id})"
+            >Add to cart</button>
           </b-card>
         </div>
       </div>
@@ -33,10 +42,10 @@ export default {
     BCard
   },
   computed: {
-    ...mapGetters(["goods"])
+    ...mapGetters({ goods: "cotalog/goods", checkInCart: "cart/checkInCart" })
   },
-  methods : {
-	  ...mapActions(['addToCart'])
+  methods: {
+    ...mapActions({ actionsCart: "cart/actionsCart" })
   }
 };
 </script>

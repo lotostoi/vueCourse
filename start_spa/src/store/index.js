@@ -3,9 +3,19 @@ import Vuex from 'vuex';
 
 Vue.use(Vuex);
 
+import Cart from "./cart"
+import Cotalog from "./cotalog"
+
 export default new Vuex.Store({
-	state: {
-		price: 1000,
+
+	modules: {
+		cart: Cart,
+		cotalog: Cotalog
+	},
+
+	
+	/*state: {
+	 	price: 1000,
 		cnt: 1,
 		status: 'none',
 		error: false,
@@ -129,6 +139,6 @@ export default new Vuex.Store({
 				store.commit('setStatus', { status: 'done' });
 			}, 1000);
 		}
-	},
+	}, */
 	strict: process.env.NODE_ENV !== 'production'
 });

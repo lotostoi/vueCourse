@@ -2,19 +2,7 @@
   <div class="container">
     <app-header @showCart="on=false" @showCotalog="on=true"></app-header>
     <div class="row">
-      <nav class="col-2 mt-2">
-        <ul class="list-group">
-          <router-link
-            class="list-group-item"
-            v-for="rout in menu"
-            :to="{name:rout.name}"
-            :key="rout.path"
-            teg="li"
-          >
-            <a>{{rout.name}}</a>
-          </router-link>
-        </ul>
-      </nav>
+      <app-nav></app-nav>
       <div class="col-10 mt-5 contAnim">
         <transition enter-active-class="enter" leave-active-class="leave" mode="out-in">
           <router-view></router-view>
@@ -28,28 +16,18 @@
 import AppHeader from "./components/Header";
 import AppContent from "./views/Cotalog";
 import AppCart from "./views/Cart";
+import AppNav from "./components/nav";
 import { mapGetters, mapActions } from "vuex";
 
 export default {
   components: {
     AppHeader,
     AppContent,
-    AppCart
+    AppCart,
+    AppNav
   },
   data() {
-    return {
-      on: true,
-      menu: [
-        {
-          name: "Cotalog",
-          path: "/toCotalog"
-        },
-        {
-          name: "Cart",
-          path: "/toCart"
-        }
-      ]
-    };
+    return {};
   },
 
   computed: {
@@ -62,7 +40,7 @@ export default {
 </script>
 <style lang="scss">
 body {
-  overflow: hidden;
+ // overflow: hidden;
 }
 @keyframes leave {
   from {

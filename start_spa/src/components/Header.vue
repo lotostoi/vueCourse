@@ -3,12 +3,13 @@
     <div class="container bg-warning rounded">
       <div class="d-block">
         <div class="cont">
-          
-          <h1 @click="$emit('showCotalog')" class="hover">Site</h1>
-          <div @click="$emit('showCart')">
+          <router-link :to="{name:'Main'}" class="hover">
+            <h1>Site</h1>
+          </router-link>
+          <router-link :to="{name:'Cart'}">
             <p>{{inCart}}</p>
             <b-icon-cart icon="cart" class="b-icon hover ml-10"></b-icon-cart>
-          </div>
+          </router-link>
         </div>
       </div>
     </div>
@@ -24,9 +25,7 @@ export default {
     BIconCart
   },
   data() {
-    return {
-   
-    };
+    return {};
   },
   mounted() {
     console.log(this.$router.routes + " dfgdfg");
@@ -42,15 +41,17 @@ export default {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  & > div {
+  & > a {
     cursor: pointer;
     display: flex;
     align-items: center;
+    text-decoration: none;
+    color: inherit;
   }
-  & > div > .b-icon {
+  & > a > .b-icon {
     font-size: 25px;
   }
-  & > div > p {
+  & > a > p {
     margin: 0;
     width: 30px;
     height: 30px;
