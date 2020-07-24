@@ -22,7 +22,7 @@
                 type="text"
                 class="spa-input"
                 :value="good.cnt"
-                @change="good.cnt"
+                @change="actionsCart({id:good.id,action:'cheng',e:$event})"
               />
               <button class="btn btn-success" @click="actionsCart({id:good.id,action:'inc'})">+1</button>
             </div>
