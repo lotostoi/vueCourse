@@ -2,7 +2,13 @@ import Vue from 'vue'
 import App from './App.vue'
 
 import store from './store';
-import router  from "./router"
+import router from "./router"
+
+import 'bootstrap/dist/css/bootstrap.css'
+
+store.dispatch('cotalog/getGoods')
+store.dispatch('cart/getCart')
+
 
 new Vue({
   el: '#app',
@@ -11,5 +17,4 @@ new Vue({
   router
 })
 
-import 'bootstrap/dist/css/bootstrap.css'
-//import 'bootstrap-vue/dist/bootstrap-vue.css'
+
