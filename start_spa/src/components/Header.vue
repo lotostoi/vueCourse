@@ -4,7 +4,7 @@
       <div class="d-block">
         <div class="cont">
           <router-link :to="{name:'Main'}" class="hover">
-            <h1>Silmplу SPA</h1>
+            <h1>Silmple SPA</h1>
           </router-link>
           <router-link :to="{name:'Cart'}" class="cart" active-class="cart-activ">
             <b-icon-cart icon="cart" class="b-icon hover ml-10"></b-icon-cart>

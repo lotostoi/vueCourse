@@ -110,7 +110,6 @@ export default {
         },
 
 
-
         async addCart({ commit, state, dispatch }, { id }) {
 
 
@@ -121,12 +120,7 @@ export default {
 
             dispatch('cotalog/cInProc', { id: id }, { root: true })
 
-
-
             res && commit('addCart', id)
-
-
-
 
 
         },
@@ -211,8 +205,11 @@ export default {
                 let res = await getData(`cart/change.php?token=${state.token}&id=${id}&cnt=${newCnt}`)
 
                 if (res) {
+
                     commit('chengCart', { index: indexInCart(id), val: false })
+
                     commit('chengCart', { index: indexInCart(id), val: newCnt })
+                    
                 }
 
 

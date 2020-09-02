@@ -1,7 +1,7 @@
 <template>
   <section class="mt-1">
     <div v-if="goods.length>0" class="container border rounded pl-3 pr-3 pb-3">
-      <h1>Cotalog</h1>
+      <h1>Catalog</h1>
       <div class="cont-prod">
         <section class="prod" v-for="good in goods" :key="good.id">
           <img :src="good.img" :alt="good.title" />
